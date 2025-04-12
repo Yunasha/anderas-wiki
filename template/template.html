@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head id="meta">
+    <meta charset="UTF-8">
+</head>
+
+<body style="opacity: 0; transition: opacity 0.25s ease-in-out;">
+
+    <div id="header"></div>
+    <div class="line"></div>
+
+    <!-- content head -->
+    <table style="width: 100%;">
+        <colgroup id="padding"></colgroup>
+        <tr>
+            <td>
+                <input type="checkbox" id="collapse" class="PoC-input">
+                <label for="collapse" class="PoC-label no-select">Page of Content</label>
+            </td>
+            <td class="content-td">
+                <p class="content-top-title">
+                    content-top-title
+                </p>
+            </td>
+            <td class="filler">
+
+            </td>
+        </tr>
+    </table>
+
+    <!--content-->
+    <table style="width: 100%;">
+        <colgroup id="padding"></colgroup>
+        <tr>
+            <!--index-->
+            <td>
+                <ul class="PoC-ul">
+                    <li>no 1</li>
+                    <li>no 2</li>
+                </ul>
+            </td>
+
+            <!--content text-->
+            <td>
+                <div class="line"></div>
+                <p class="content-title">
+                    content-title
+                </p>
+
+                <div class="data">
+                    <p class="data-title">
+                        data-title
+                    </p>
+                    <table style="width: 100%;" class="data-table">
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+
+                        <tr>
+                            <td style="font-weight: bold; padding-left: 0.5rem;">
+                                <p>key</p>
+                            </td>
+                            <td>
+                                <p>value</p>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <p class="content-main">
+                    content-main
+                </p>
+            </td>
+            <!--idk-->
+            <td class="filler"></td>
+
+        </tr>
+    </table>
+</body>
+<script>
+    async function load_template() {
+        document.getElementById('meta').innerHTML = await (await fetch('/template/meta.html')).text();
+        document.getElementById('header').innerHTML = await (await fetch('/template/header.html')).text();
+
+        const padding = await fetch('/template/padding.html');
+        const padding_text = await padding.text();
+        const paddingElements = document.querySelectorAll('#padding');
+
+        paddingElements.forEach(element => {
+            element.innerHTML = padding_text;
+        });
+
+        // Fade in the page after loading all content
+        document.body.style.opacity = "1"; // Set opacity to 1 to fade in
+    }
+
+    // Call load_template and set initial opacity to 0
+    document.body.style.opacity = "0"; // Set initial opacity to 0
+    load_template();
+
+    // Function to load new content with fade effect
+    function loadContent(url) {
+        document.body.style.opacity = "0"; // Fade out
+        setTimeout(() => {
+            window.location.href = url; // Navigate to the new page after fade out
+        }, 500); // Match this to your transition duration
+    }
+
+    // Add click event listeners to all links
+    document.body.addEventListener('click', function (e) {
+        const target = e.target.closest('a');
+        if (target && target.getAttribute('href')) {
+            e.preventDefault(); // Prevent default link behavior
+            loadContent(target.href); // Load content with fade effect
+        }
+    });
+
+    // Fade out when leaving the page
+    window.addEventListener('beforeunload', function () {
+        document.body.style.opacity = "0"; // Set opacity to 0 when leaving
+    });
+    
+    document.getElementById('collapse').addEventListener('click', function () {
+        var list = document.getElementById('PoC-list');
+        list.style.display = list.style.display === 'none' ? 'block' : 'none';
+    });
+</script>
+
+</html>

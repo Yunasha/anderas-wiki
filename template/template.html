@@ -82,8 +82,10 @@
 </body>
 <script>
     async function load_template() {
-        document.getElementById('meta').innerHTML = await (await fetch('/template/meta.html')).text();
-        document.getElementById('header').innerHTML = await (await fetch('/template/header.html')).text();
+        const base = window.location.pathname.replace(/\/[^\/]*$/, '/');
+
+        document.getElementById('meta').innerHTML = await (await fetch(base + 'template/meta.html')).text();
+        document.getElementById('header').innerHTML = await (await fetch(base + 'template/header.html')).text();
 
         const padding = await fetch('/template/padding.html');
         const padding_text = await padding.text();

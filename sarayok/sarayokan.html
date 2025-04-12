@@ -148,7 +148,7 @@
                 </div>
 
                 <p class="content-main">
-                    <b>Sarayokan</b> is a language spoken mostly in <a href="/sarayok/country_rabang_sarayok.html"
+                    <b>Sarayokan</b> is a language spoken mostly in <a href="./country_rabang_sarayok.html"
                         class="linker">Rabang
                         Sarayok</a> and Nèréta Rès. It is a member
                     of the Érta-Sarayokan language family. It is spoken by approximately 24,1 million peoples as of
@@ -163,8 +163,10 @@
 </body>
 <script>
     async function load_template() {
-        document.getElementById('meta').innerHTML = await (await fetch('/template/meta.html')).text();
-        document.getElementById('header').innerHTML = await (await fetch('/template/header.html')).text();
+        const base = window.location.pathname.replace(/\/[^\/]*$/, '/');
+
+        document.getElementById('meta').innerHTML = await (await fetch(base + 'template/meta.html')).text();
+        document.getElementById('header').innerHTML = await (await fetch(base + 'template/header.html')).text();
 
         const padding = await fetch('/template/padding.html');
         const padding_text = await padding.text();
